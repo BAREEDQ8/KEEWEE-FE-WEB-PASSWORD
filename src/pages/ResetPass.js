@@ -13,7 +13,7 @@ export const ResetPass = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const { mutate, isSuccess, isError } = useMutation(
+  const { mutate, isError } = useMutation(
     ["resetpassword", token],
     () => {
       return resetpassword(token, data);
