@@ -5,6 +5,7 @@ import { resetpassword } from "../api/auth";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "font-awesome/css/font-awesome.min.css";
+import logoImag from "../assets/icon.png";
 
 export const ResetPass = () => {
   const { token } = useParams();
@@ -52,6 +53,7 @@ export const ResetPass = () => {
       <div
         className={`max-w-sm w-full px-4 py-4 bg-white rounded-md shadow-md border border-gray-600 flex flex-col items-center justify-center`}
       >
+        <img src={logoImag} alt="logo" className="w-20 h-20 mb-4" />
         <h1 className="text-2xl text-black font-semibold mb-4 text-center">
           Reset Password
         </h1>{" "}
