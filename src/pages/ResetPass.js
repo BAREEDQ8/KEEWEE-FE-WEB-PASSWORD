@@ -6,7 +6,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import "font-awesome/css/font-awesome.min.css";
 import logoImag from "../assets/icon.png";
-
+//TODOs
+//check if the password was in used before
 export const ResetPass = () => {
   const { token } = useParams();
   const [data, setData] = useState("");
@@ -36,7 +37,12 @@ export const ResetPass = () => {
   const validationSchema = Yup.object({
     password: Yup.string().required("Password is required"),
     confirmPassword: Yup.string()
-      .required("Confirm password is required")
+      .min(8, "Password must be at least 8 characters long.")
+      // .matches(/\d/, "Password must contain a number.")
+      .matches(/[A-Z]/, "Password must contain an uppercase letter.")
+      .matches(/[a-z]/, "Password must contain a lowercase letter.")
+      // .matches(/[!@#$%^&*(),.?":{}|<>]/, "Password must contain a symbol.")
+      .required("Password is required.")
       .oneOf([Yup.ref("password"), null], "Passwords must match"),
   });
 
