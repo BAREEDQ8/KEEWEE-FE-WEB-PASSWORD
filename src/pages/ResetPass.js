@@ -14,6 +14,7 @@ export const ResetPass = () => {
   const [success, setSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState("");
 
   const { mutate, isError } = useMutation(
     ["resetpassword", token],
@@ -25,9 +26,15 @@ export const ResetPass = () => {
         // alert("Password reset successfully");
         setSuccess(true);
       },
-      onError: () => setSuccess(false),
+      onError: (e) => {
+        console.log(e);
+        setError(e?.response.data.error.message);
+        setSuccess(false);
+        console.log(isError);
+      },
     }
   );
+  console.log(error);
 
   const initialValues = {
     password: "",
@@ -35,18 +42,19 @@ export const ResetPass = () => {
   };
 
   const validationSchema = Yup.object({
-    password: Yup.string().required("Password is required"),
-    confirmPassword: Yup.string()
+    password: Yup.string()
       .min(8, "Password must be at least 8 characters long.")
       // .matches(/\d/, "Password must contain a number.")
       .matches(/[A-Z]/, "Password must contain an uppercase letter.")
-      .matches(/[a-z]/, "Password must contain a lowercase letter.")
-      // .matches(/[!@#$%^&*(),.?":{}|<>]/, "Password must contain a symbol.")
+      .matches(/[a-z]/, "Password must contain a lowercase letter."),
+    // .matches(/[!@#$%^&*(),.?":{}|<>]/, "Password must contain a symbol.")
+    confirmPassword: Yup.string()
       .required("Password is required.")
       .oneOf([Yup.ref("password"), null], "Passwords must match"),
   });
 
   const handleFormSubmit = (values) => {
+    console.log(values);
     setData({ password: values.password });
     mutate();
   };
@@ -59,18 +67,22 @@ export const ResetPass = () => {
       <div
         className={`max-w-sm w-full px-4 py-4 bg-white rounded-md shadow-md border border-gray-600 flex flex-col items-center justify-center`}
       >
-        <img src={logoImag} alt="logo" className="w-20 h-20 mb-4" />
+        <img
+          src={logoImag}
+          alt="logo"
+          className="w-20 h-20 mb-4 rounded-[7px]"
+        />
         <h1 className="text-2xl text-black font-semibold mb-4 text-center">
-          Reset Password
+          Keewee Reset Password
         </h1>{" "}
         {(isError && (
           <div className="mb-4 w-full text-center text-white bg-red-500 p-2 rounded">
-            Error resetting password
+            {error || `${error}`}
           </div>
         )) ||
           (success && (
             <div className="mb-4 w-full text-center text-white bg-green-500 p-2 rounded">
-              Password reset successfully
+              Password Reset Successfully!
             </div>
           ))}
         {!success && (
@@ -84,6 +96,7 @@ export const ResetPass = () => {
                 <div className="mb-2 flex flex-col items-center relative w-full">
                   <label
                     htmlFor="password"
+                    successfully
                     className="text-black text-xs font-medium mb-1 text-center"
                   >
                     New Password
@@ -150,7 +163,7 @@ export const ResetPass = () => {
                 <div className="flex justify-center w-full">
                   <button
                     type="submit"
-                    className="px-2 py-1 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600"
+                    className="px-2 py-1 bg-[#2d265a] text-white rounded-md text-sm hover:bg-[#534992]"
                   >
                     Reset Password
                   </button>
